@@ -70,6 +70,29 @@
 
   renderUsers();
 
+  const initClickLikeButtons = () => {
+
+    const userLikeButtons = document.querySelectorAll('.like-button');
+    const userLikes = document.querySelectorAll('.likes-counter');
+
+    for (let i = 0; i < userLikeButtons.length; i++) {
+      userLikeButtons[i].addEventListener('click', function () {
+
+        if (!userLikeButtons[i].classList.contains('-active-like')) {
+          userLikeButtons[i].classList.add('-active-like');
+          userLikes[i].textContent++;
+        }
+
+        else {
+          userLikeButtons[i].classList.remove('-active-like');
+          userLikes[i].textContent--;
+        }
+      });
+    };
+  };
+
+  initClickLikeButtons();
+
   formButton.addEventListener('click', function () {
 
     if (formName.value !== "" && formText.value !== "") {
@@ -82,6 +105,7 @@
       })
 
       renderUsers();
+      initClickLikeButtons();
 
       formName.value = '';
       formText.value = '';
