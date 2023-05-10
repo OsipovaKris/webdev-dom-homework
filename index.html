@@ -30,82 +30,87 @@
   const formText = document.querySelector('.add-form-text');
   const formButton = document.querySelector('.add-form-button');
 
-  const users = [
+  const comments = [
     {
       name: "Глеб Фокин",
       date: new Date(2022, 1, 12, 12, 18).toLocaleString().slice(0, -3),
-      coment: "Это будет первый комментарий на этой странице",
+      commentary: "Это будет первый комментарий на этой странице",
       likes: "3",
+      isLiked: false,
     },
     {
       name: "Варвара Н.",
       date: new Date(2022, 1, 13, 19, 22).toLocaleString().slice(0, -3),
-      coment: "Мне нравится как оформлена эта страница! ❤",
+      commentary: "Мне нравится как оформлена эта страница! ❤",
       likes: "75",
+      isLiked: false,
     },
   ];
 
-  const renderUsers = () => {
-    const usersHtml = users
-      .map((user) => {
+  const initClickLikeButtons = () => {
+
+    const commentLikeButtons = document.querySelectorAll('.like-button');
+    const commentLikes = document.querySelectorAll('.likes-counter');
+
+    for (let i = 0; i < commentLikeButtons.length; i++) {
+      commentLikeButtons[i].addEventListener('click', function () {
+
+        if (!comments[i].isLiked) {
+          comments[i].isLiked = true;
+          comments[i].likes++;
+        }
+
+        else {
+          comments[i].isLiked = false;
+          comments[i].likes--;
+        }
+
+        renderComments();
+      });
+    };
+  };
+
+  const renderComments = () => {
+    const commentsHtml = comments
+      .map((comment) => {
         return `<li class="comment">
           <div class="comment-header">
-          <div>${user.name}</div>
-          <div>${user.date}</div>
+          <div>${comment.name}</div>
+          <div>${comment.date}</div>
           </div>
           <div class="comment-body">
-          <div class="comment-text">${user.coment}</div>
+          <div class="comment-text">${comment.commentary}</div>
           </div>
           <div class="comment-footer">
           <div class="likes">
-          <span class="likes-counter">${user.likes}</span>
-          <button class="like-button"></button>
+          <span class="likes-counter">${comment.likes}</span>
+          <button class="like-button ${comment.isLiked ? '-active-like' : ''}"></button>
           </div>
           </div>
         </li >`;
       })
       .join("");
-    commentsBox.innerHTML = usersHtml;
+
+    commentsBox.innerHTML = commentsHtml;
+
+    initClickLikeButtons();
   };
 
-  renderUsers();
-
-  const initClickLikeButtons = () => {
-
-    const userLikeButtons = document.querySelectorAll('.like-button');
-    const userLikes = document.querySelectorAll('.likes-counter');
-
-    for (let i = 0; i < userLikeButtons.length; i++) {
-      userLikeButtons[i].addEventListener('click', function () {
-
-        if (!userLikeButtons[i].classList.contains('-active-like')) {
-          userLikeButtons[i].classList.add('-active-like');
-          userLikes[i].textContent++;
-        }
-
-        else {
-          userLikeButtons[i].classList.remove('-active-like');
-          userLikes[i].textContent--;
-        }
-      });
-    };
-  };
-
-  initClickLikeButtons();
+  renderComments();
 
   formButton.addEventListener('click', function () {
 
     if (formName.value !== "" && formText.value !== "") {
 
-      users.push({
+      comments.push({
         name: formName.value,
         date: new Date().toLocaleString().slice(0, -3),
-        coment: formText.value,
+        commentary: formText.value,
         likes: 0,
+        isLiked: false,
       })
 
-      renderUsers();
-      initClickLikeButtons();
+      renderComments();
 
       formName.value = '';
       formText.value = '';
