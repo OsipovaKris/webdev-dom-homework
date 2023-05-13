@@ -10,40 +10,7 @@
 <body>
   <div class="container">
     <ul class="comments">
-      <li class="comment">
-        <div class="comment-header">
-          <div>Глеб Фокин</div>
-          <div>12.02.22 12:18</div>
-        </div>
-        <div class="comment-body">
-          <div class="comment-text">
-            Это будет первый комментарий на этой странице
-          </div>
-        </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">3</span>
-            <button class="like-button"></button>
-          </div>
-        </div>
-      </li>
-      <li class="comment">
-        <div class="comment-header">
-          <div>Варвара Н.</div>
-          <div>13.02.22 19:22</div>
-        </div>
-        <div class="comment-body">
-          <div class="comment-text">
-            Мне нравится как оформлена эта страница! ❤
-          </div>
-        </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">75</span>
-            <button class="like-button -active-like"></button>
-          </div>
-        </div>
-      </li>
+      <!-- комментарии рендерятся из JS -->
     </ul>
     <div class="add-form">
       <input type="text" class="add-form-name" placeholder="Введите ваше имя" />
@@ -63,25 +30,87 @@
   const formText = document.querySelector('.add-form-text');
   const formButton = document.querySelector('.add-form-button');
 
-  formButton.addEventListener('click', function () {
+  const comments = [
+    {
+      name: "Глеб Фокин",
+      date: new Date(2022, 1, 12, 12, 18).toLocaleString().slice(0, -3),
+      commentary: "Это будет первый комментарий на этой странице",
+      likes: "3",
+      isLiked: false,
+    },
+    {
+      name: "Варвара Н.",
+      date: new Date(2022, 1, 13, 19, 22).toLocaleString().slice(0, -3),
+      commentary: "Мне нравится как оформлена эта страница! ❤",
+      likes: "75",
+      isLiked: false,
+    },
+  ];
 
-    if (formName.value != "" && formText.value != "") {
-      commentsBox.innerHTML = commentsBox.innerHTML +
-        `<li class="comment">
+  const initClickLikeButtons = () => {
+
+    const commentLikeButtons = document.querySelectorAll('.like-button');
+    const commentLikes = document.querySelectorAll('.likes-counter');
+
+    for (let i = 0; i < commentLikeButtons.length; i++) {
+      commentLikeButtons[i].addEventListener('click', function () {
+
+        if (!comments[i].isLiked) {
+          comments[i].isLiked = true;
+          comments[i].likes++;
+        }
+
+        else {
+          comments[i].isLiked = false;
+          comments[i].likes--;
+        }
+
+        renderComments();
+      });
+    };
+  };
+
+  const renderComments = () => {
+    const commentsHtml = comments
+      .map((comment) => {
+        return `<li class="comment">
           <div class="comment-header">
-          <div>${formName.value}</div>
-          <div>${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString().slice(0, -3)}</div>
+          <div>${comment.name}</div>
+          <div>${comment.date}</div>
           </div>
           <div class="comment-body">
-          <div class="comment-text">${formText.value}</div>
+          <div class="comment-text">${comment.commentary}</div>
           </div>
           <div class="comment-footer">
           <div class="likes">
-          <span class="likes-counter">0</span>
-          <button class="like-button -active-like"></button>
+          <span class="likes-counter">${comment.likes}</span>
+          <button class="like-button ${comment.isLiked ? '-active-like' : ''}"></button>
           </div>
           </div>
-        </li >`
+        </li >`;
+      })
+      .join("");
+
+    commentsBox.innerHTML = commentsHtml;
+
+    initClickLikeButtons();
+  };
+
+  renderComments();
+
+  formButton.addEventListener('click', function () {
+
+    if (formName.value !== "" && formText.value !== "") {
+
+      comments.push({
+        name: formName.value,
+        date: new Date().toLocaleString().slice(0, -3),
+        commentary: formText.value,
+        likes: 0,
+        isLiked: false,
+      })
+
+      renderComments();
 
       formName.value = '';
       formText.value = '';
