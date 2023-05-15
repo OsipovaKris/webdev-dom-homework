@@ -53,7 +53,9 @@
     const commentLikes = document.querySelectorAll('.likes-counter');
 
     for (let i = 0; i < commentLikeButtons.length; i++) {
-      commentLikeButtons[i].addEventListener('click', function () {
+      commentLikeButtons[i].addEventListener('click', function (event) {
+
+        event.stopPropagation();
 
         if (!comments[i].isLiked) {
           comments[i].isLiked = true;
@@ -68,6 +70,17 @@
         renderComments();
       });
     };
+  };
+
+  const initAnswerComment = () => {
+
+    const commentItems = document.querySelectorAll('.comment');
+
+    for (let i = 0; i < commentItems.length; i++) {
+      commentItems[i].addEventListener('click', function () {
+        formText.value = `>${comments[i].commentary}\n${comments[i].name}, `;
+      });
+    }
   };
 
   const renderComments = () => {
@@ -94,6 +107,7 @@
     commentsBox.innerHTML = commentsHtml;
 
     initClickLikeButtons();
+    initAnswerComment();
   };
 
   renderComments();
@@ -103,9 +117,13 @@
     if (formName.value !== "" && formText.value !== "") {
 
       comments.push({
-        name: formName.value,
+        name: formName.value
+          .replaceAll('>', '&gt')
+          .replaceAll('<', '&lt'),
         date: new Date().toLocaleString().slice(0, -3),
-        commentary: formText.value,
+        commentary: formText.value
+          .replaceAll('>', '&gt')
+          .replaceAll('<', '&lt'),
         likes: 0,
         isLiked: false,
       })
