@@ -30,22 +30,28 @@
   const formText = document.querySelector('.add-form-text');
   const formButton = document.querySelector('.add-form-button');
 
-  const comments = [
-    {
-      name: "Глеб Фокин",
-      date: new Date(2022, 1, 12, 12, 18).toLocaleString().slice(0, -3),
-      commentary: "Это будет первый комментарий на этой странице",
-      likes: "3",
-      isLiked: false,
-    },
-    {
-      name: "Варвара Н.",
-      date: new Date(2022, 1, 13, 19, 22).toLocaleString().slice(0, -3),
-      commentary: "Мне нравится как оформлена эта страница! ❤",
-      likes: "75",
-      isLiked: false,
-    },
-  ];
+  fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova/comments", {
+    method: "GET",
+  }).then((response) => {
+
+    response.json().then((responseData) => {
+
+      const appComments = responseData.comments.map((comment) => {
+        return {
+          name: comment.author.name,
+          date: new Date(comment.date).toLocaleString().slice(0, -3),
+          commentary: comment.text,
+          likes: comment.likes,
+          isLiked: false,
+        };
+      });
+
+      comments = appComments;
+      renderComments();
+    })
+  });
+
+  let comments = [];
 
   const initClickLikeButtons = () => {
 
@@ -116,17 +122,35 @@
 
     if (formName.value !== "" && formText.value !== "") {
 
-      comments.push({
-        name: formName.value
-          .replaceAll('>', '&gt')
-          .replaceAll('<', '&lt'),
-        date: new Date().toLocaleString().slice(0, -3),
-        commentary: formText.value
-          .replaceAll('>', '&gt')
-          .replaceAll('<', '&lt'),
-        likes: 0,
-        isLiked: false,
-      })
+      fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova/comments", {
+        method: "POST",
+        body: JSON.stringify({
+          name: formName.value,
+          text: formText.value,
+        })
+      }).then((response) => {
+
+        fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova/comments", {
+          method: "GET",
+        }).then((response) => {
+
+          response.json().then((responseData) => {
+
+            const appComments = responseData.comments.map((comment) => {
+              return {
+                name: comment.author.name,
+                date: new Date(comment.date).toLocaleString().slice(0, -3),
+                commentary: comment.text,
+                likes: comment.likes,
+                isLiked: false,
+              };
+            });
+
+            comments = appComments;
+            renderComments();
+          })
+        });
+      });
 
       renderComments();
 
