@@ -146,11 +146,22 @@
         body: JSON.stringify({
           name: formName.value,
           text: formText.value,
+          forceError: true,
         })
       })
         .then((response) => {
 
-          return response.json();
+          if (response.status === 400) {
+            throw new Error("Плохой запрос");
+          }
+
+          if (response.status === 500) {
+            throw new Error("Сервер сломался");
+          }
+
+          else {
+            return response.json();
+          }
         })
         .then(() => {
 
@@ -159,12 +170,30 @@
         .then(() => {
 
           formBox.classList.remove('hidden');
+          formName.value = '';
+          formText.value = '';
+        })
+        .catch((error) => {
+
+          formBox.classList.remove('hidden');
+          textPending.classList.add('hidden');
+
+          if (error.message === "Плохой запрос") {
+            alert("Имя и комментарий должны содержать больше 3 символов, исправь и попробуй снова");
+            return;
+          }
+
+          if (error.message === "Сервер сломался") {
+            alert("Сервер сломался, попробуй позже");
+            return;
+          }
+
+          else {
+            console.log(error);
+          }
         });
 
       renderComments();
-
-      formName.value = '';
-      formText.value = '';
     }
   });
 
