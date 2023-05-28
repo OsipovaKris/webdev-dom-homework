@@ -12,6 +12,7 @@
     <ul class="comments">
       <!-- комментарии рендерятся из JS -->
     </ul>
+    <p class="hidden">Пожалуйста подождите, загружаю комментарии...</p>
     <div class="add-form">
       <input type="text" class="add-form-name" placeholder="Введите ваше имя" />
       <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"></textarea>
@@ -29,27 +30,40 @@
   const formName = document.querySelector('.add-form-name');
   const formText = document.querySelector('.add-form-text');
   const formButton = document.querySelector('.add-form-button');
+  const formBox = document.querySelector('.add-form');
+  const textPending = document.querySelector('p');
 
-  fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova/comments", {
-    method: "GET",
-  }).then((response) => {
+  textPending.classList.remove('hidden');
 
-    response.json().then((responseData) => {
-
-      const appComments = responseData.comments.map((comment) => {
-        return {
-          name: comment.author.name,
-          date: new Date(comment.date).toLocaleString().slice(0, -3),
-          commentary: comment.text,
-          likes: comment.likes,
-          isLiked: false,
-        };
-      });
-
-      comments = appComments;
-      renderComments();
+  const fetchAndRenderComments = () => {
+    return fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova/comments", {
+      method: "GET",
     })
-  });
+      .then((response) => {
+
+        return response.json();
+      })
+
+      .then((responseData) => {
+
+        const appComments = responseData.comments.map((comment) => {
+          return {
+            name: comment.author.name,
+            date: new Date(comment.date).toLocaleString().slice(0, -3),
+            commentary: comment.text,
+            likes: comment.likes,
+            isLiked: false,
+          };
+        });
+
+        comments = appComments;
+        renderComments();
+      })
+      .then((data) => {
+
+        textPending.classList.add('hidden');
+      });
+  };
 
   let comments = [];
 
@@ -116,11 +130,16 @@
     initAnswerComment();
   };
 
+  fetchAndRenderComments();
   renderComments();
 
   formButton.addEventListener('click', function () {
 
     if (formName.value !== "" && formText.value !== "") {
+
+      formBox.classList.add('hidden');
+      textPending.classList.remove('hidden');
+      textPending.textContent = "Комментарий добавляется...";
 
       fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova/comments", {
         method: "POST",
@@ -128,29 +147,19 @@
           name: formName.value,
           text: formText.value,
         })
-      }).then((response) => {
+      })
+        .then((response) => {
 
-        fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova/comments", {
-          method: "GET",
-        }).then((response) => {
+          return response.json();
+        })
+        .then(() => {
 
-          response.json().then((responseData) => {
+          return fetchAndRenderComments();
+        })
+        .then(() => {
 
-            const appComments = responseData.comments.map((comment) => {
-              return {
-                name: comment.author.name,
-                date: new Date(comment.date).toLocaleString().slice(0, -3),
-                commentary: comment.text,
-                likes: comment.likes,
-                isLiked: false,
-              };
-            });
-
-            comments = appComments;
-            renderComments();
-          })
+          formBox.classList.remove('hidden');
         });
-      });
 
       renderComments();
 
