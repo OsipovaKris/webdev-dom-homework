@@ -2,7 +2,7 @@ import { formName } from "./main.js";
 import { formText } from "./main.js";
 
 const fetchGet = () => {
-    return fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova2/comments", {
+    return fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova/comments", {
         method: "GET",
     })
         .then((response) => {
@@ -12,7 +12,7 @@ const fetchGet = () => {
 };
 
 const fetchPost = () => {
-    return fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova2/comments", {
+    return fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova/comments", {
         method: "POST",
         body: JSON.stringify({
             name: formName.value
