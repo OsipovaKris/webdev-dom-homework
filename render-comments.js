@@ -1,4 +1,6 @@
-import {comments} from "./main";
+import { comments } from "./main.js";
+import { commentsBox } from "./main.js";
+import { formText } from "./main.js";
 
 const initClickLikeButtons = () => {
 
@@ -6,37 +8,35 @@ const initClickLikeButtons = () => {
     const commentLikes = document.querySelectorAll('.likes-counter');
 
     for (let i = 0; i < commentLikeButtons.length; i++) {
-      commentLikeButtons[i].addEventListener('click', function (event) {
+        commentLikeButtons[i].addEventListener('click', function (event) {
 
-        event.stopPropagation();
+            event.stopPropagation();
 
-        if (!comments[i].isLiked) {
-          comments[i].isLiked = true;
-          comments[i].likes++;
-        }
+            if (!comments[i].isLiked) {
+                comments[i].isLiked = true;
+                comments[i].likes++;
+            }
 
-        else {
-          comments[i].isLiked = false;
-          comments[i].likes--;
-        }
+            else {
+                comments[i].isLiked = false;
+                comments[i].likes--;
+            }
 
-        renderComments();
-      });
+            renderComments();
+        });
     };
-  };
+};
 
-  const initAnswerComment = () => {
+const initAnswerComment = () => {
 
     const commentItems = document.querySelectorAll('.comment');
 
     for (let i = 0; i < commentItems.length; i++) {
-      commentItems[i].addEventListener('click', function () {
-        formText.value = `>${comments[i].commentary}\n${comments[i].name}, `;
-      });
+        commentItems[i].addEventListener('click', function () {
+            formText.value = `>${comments[i].commentary}\n${comments[i].name}, `;
+        });
     }
-  };
-
-const commentsBox = document.querySelector('.comments');
+};
 
 const renderComments = () => {
 
