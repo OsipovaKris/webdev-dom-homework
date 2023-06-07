@@ -1,9 +1,16 @@
 import { formName } from "./main.js";
 import { formText } from "./main.js";
 
+const host = "https://webdev-hw-api.vercel.app/api/v2/kris-osipova1/comments";
+
+let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
+
 const fetchGet = () => {
-    return fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova/comments", {
+    return fetch(host, {
         method: "GET",
+        headers: {
+            Authorization: token,
+        },
     })
         .then((response) => {
 
@@ -12,8 +19,11 @@ const fetchGet = () => {
 };
 
 const fetchPost = () => {
-    return fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova/comments", {
+    return fetch(host, {
         method: "POST",
+        headers: {
+            Authorization: token,
+        },
         body: JSON.stringify({
             name: formName.value
                 .replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
