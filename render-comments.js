@@ -1,19 +1,9 @@
-// export const commentsBox = document.querySelector('.comments');
-// export const formName = document.querySelector('.add-form-name');
-// export const formText = document.querySelector('.add-form-text');
-// const formButton = document.querySelector('.add-form-button');
-// const formBox = document.querySelector('.add-form');
-// const textPending = document.querySelector('p');
-
-
 import { fetchGet } from "./api.js";
 import { fetchPost } from "./api.js";
 
 
-
 const initClickLikeButtons = () => {
     const commentLikeButtons = document.querySelectorAll('.like-button');
-    const commentLikes = document.querySelectorAll('.likes-counter');
 
     for (let i = 0; i < commentLikeButtons.length; i++) {
         commentLikeButtons[i].addEventListener('click', function (event) {
@@ -30,7 +20,7 @@ const initClickLikeButtons = () => {
                 comments[i].likes--;
             }
 
-            renderComments();
+            renderApp();
         });
     };
 };
@@ -39,6 +29,7 @@ const initClickLikeButtons = () => {
 const initAnswerComment = () => {
 
     const commentItems = document.querySelectorAll('.comment');
+    const formText = document.querySelector('.add-form-text');
 
     for (let i = 0; i < commentItems.length; i++) {
         commentItems[i].addEventListener('click', function () {
@@ -48,7 +39,7 @@ const initAnswerComment = () => {
 };
 
 
-const renderComments = () => {
+const renderApp = () => {
 
     const appEl = document.getElementById("app");
 
@@ -98,6 +89,7 @@ const renderComments = () => {
 
         const formName = document.querySelector('.add-form-name');
         const formText = document.querySelector('.add-form-text');
+        const textPending = document.querySelector('p');
 
         if (formName.value !== "" && formText.value !== "") {
 
@@ -139,8 +131,6 @@ const renderComments = () => {
                         return;
                     }
                 });
-
-            renderComments();
         }
     });
 
@@ -167,7 +157,7 @@ const fetchAndRenderComments = () => {
             });
 
             comments = appComments;
-            renderComments();
+            renderApp();
 
 
         })
@@ -181,11 +171,8 @@ const fetchAndRenderComments = () => {
 
 export let comments = [];
 
-
 fetchAndRenderComments();
-
-renderComments();
-
+renderApp();
 
 const textPending = document.querySelector('p');
 textPending.classList.remove('hidden');

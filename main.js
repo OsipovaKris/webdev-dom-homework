@@ -26,7 +26,7 @@
 //             });
 
 //             comments = appComments;
-//             renderComments();
+//             renderApp();
 //         })
 //         .then((data) => {
 
@@ -36,10 +36,10 @@
 
 // export let comments = [];
 
-// import renderComments from "./render-comments.js";
+// import renderApp from "./render-comments.js";
 
 // fetchAndRenderComments();
-// renderComments();
+// renderApp();
 
 // formButton.addEventListener('click', function () {
 
@@ -82,7 +82,7 @@
 //                 }
 //             });
 
-//         renderComments();
+//         renderApp();
 //     }
 // });
 

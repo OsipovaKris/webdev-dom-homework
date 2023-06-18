@@ -1,7 +1,4 @@
-// import { formName } from "./render-comments.js";
-// import { formText } from "./render-comments.js";
-
-const host = "https://webdev-hw-api.vercel.app/api/v2/kris-osipova3/comments";
+const host = "https://webdev-hw-api.vercel.app/api/v2/kris-osipova5/comments";
 
 let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
 
