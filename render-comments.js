@@ -96,15 +96,17 @@ const renderComments = () => {
 
     formButton.addEventListener('click', function () {
 
+        const formName = document.querySelector('.add-form-name');
+        const formText = document.querySelector('.add-form-text');
+
         if (formName.value !== "" && formText.value !== "") {
-            console.log('object');
 
             textPending.classList.remove('hidden');
             textPending.textContent = 'Комментарий добавляется...';
             formBox.classList.add('hidden');
 
 
-            fetchPost()
+            fetchPost(formName, formText)
                 .then(() => {
 
                     return fetchAndRenderComments();
@@ -187,7 +189,3 @@ renderComments();
 
 const textPending = document.querySelector('p');
 textPending.classList.remove('hidden');
-
-
-export const formName = document.querySelector('.add-form-name');
-export const formText = document.querySelector('.add-form-text');
