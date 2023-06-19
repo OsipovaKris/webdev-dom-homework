@@ -136,6 +136,29 @@ body {
     opacity: 0.9;
   }
 
+  .login-form {
+    align-items: center;
+  }
+
+  .login-text {
+    width: 490px;
+    text-align: start;
+  }
+
+  .add-login {
+    font-size: 16px;
+    font-family: Helvetica;
+    border-radius: 8px;
+    border: none;
+    width: 450px;
+    height: 30px;
+    padding: 11px 22px;
+  }
+
+  .login-button {
+    width: 490px;
+  }
+  
   .hidden {
     display: none;
   }

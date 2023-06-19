@@ -1,6 +1,7 @@
-const host = "https://webdev-hw-api.vercel.app/api/v2/kris-osipova5/comments";
+const host = "https://webdev-hw-api.vercel.app/api/v2/kris-osipova557/comments";
 
-let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
+import { token } from "./render-comments.js";
+
 
 const fetchGet = () => {
     return fetch(host, {
@@ -45,4 +46,4 @@ const fetchPost = (name, text) => {
         })
 };
 
-export { fetchGet, fetchPost };
+export { fetchGet, fetchPost, token };

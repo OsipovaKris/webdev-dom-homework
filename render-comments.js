@@ -1,6 +1,9 @@
 import { fetchGet } from "./api.js";
 import { fetchPost } from "./api.js";
 
+let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
+
+token = null;
 
 const initClickLikeButtons = () => {
     const commentLikeButtons = document.querySelectorAll('.like-button');
@@ -63,20 +66,55 @@ const renderApp = () => {
         })
         .join("");
 
-    const appHtml = `
-        <div class="container">
-            <ul class="comments">
-                ${commentsHtml}
-            </ul >
-            <p class="hidden">Пожалуйста подождите, загружаю комментарии...</p>
-            <div class="add-form">
-                <input type="text" class="add-form-name" placeholder="Введите ваше имя" />
-                <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"></textarea>
-                <div class="add-form-row">
-                    <button class="add-form-button">Написать</button>
+
+    if (!token) {
+
+        const appHtml = `
+            <div class="container">
+                <p class="hidden">Пожалуйста подождите...</p>
+                <div class="add-form login-form">
+                    <h2 class="login-text">Форма входа</h2>
+                    <input type="text" class="add-login" placeholder="Введите логин" />
+                    <br>
+                    <input type="password" class="add-login" placeholder="Введите пароль" />
+                    <div class="add-form-row">
+                        <button class="add-form-button login-button" id="login-button"">Войти</button>
+                    </div>
                 </div>
-            </div>
-        </div >`;
+            </div>`;
+
+        appEl.innerHTML = appHtml;
+        
+
+        document.querySelector('.login-button').addEventListener('click', function () {
+
+            token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
+
+            fetchAndRenderComments();
+            
+            const textPending = document.querySelector('p');
+            textPending.classList.remove('hidden');
+            textPending.textContent = 'Пожалуйста подождите, загружаю комментарии...';
+        })
+
+        return;
+    }
+
+
+    const appHtml = `
+         <div class="container">
+             <ul class="comments">
+                 ${commentsHtml}
+             </ul >
+             <p class="hidden">Пожалуйста подождите, загружаю комментарии...</p>
+             <div class="add-form">
+                 <input type="text" class="add-form-name" placeholder="Введите ваше имя" />
+                 <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"></textarea>
+                 <div class="add-form-row">
+                     <button class="add-form-button">Написать</button>
+                 </div>
+             </div>
+         </div >`;
 
     appEl.innerHTML = appHtml;
 
@@ -134,14 +172,14 @@ const renderApp = () => {
         }
     });
 
-
     initClickLikeButtons();
     initAnswerComment();
 };
 
 
-
 const fetchAndRenderComments = () => {
+
+    const textPending = document.querySelector('p');
 
     return fetchGet()
         .then((responseData) => {
@@ -157,9 +195,8 @@ const fetchAndRenderComments = () => {
             });
 
             comments = appComments;
+
             renderApp();
-
-
         })
         .then((data) => {
 
@@ -176,3 +213,5 @@ renderApp();
 
 const textPending = document.querySelector('p');
 textPending.classList.remove('hidden');
+
+export { token };
