@@ -136,6 +136,12 @@ body {
     opacity: 0.9;
   }
 
+  .login-form-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .login-form {
     align-items: center;
   }
@@ -157,6 +163,17 @@ body {
 
   .login-button {
     width: 490px;
+  }
+
+  .toggle-button {
+    color: #ffffff;
+    font-size: 24px;
+    margin-top: 30px;
+    margin-bottom: 5px;
+  }
+
+  .toggle-button:hover {
+    opacity: 0.8;
   }
   
   .hidden {
