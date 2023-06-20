@@ -3,7 +3,7 @@ const host = "https://webdev-hw-api.vercel.app/api/v2/kris-osipova557/comments";
 import { token } from "./render-comments.js";
 
 
-const fetchGet = () => {
+export const fetchGet = () => {
     return fetch(host, {
         method: "GET",
         headers: {
@@ -16,7 +16,7 @@ const fetchGet = () => {
         })
 };
 
-const fetchPost = (name, text) => {
+export const fetchPost = (name, text) => {
     return fetch(host, {
         method: "POST",
         headers: {
@@ -46,4 +46,15 @@ const fetchPost = (name, text) => {
         })
 };
 
-export { fetchGet, fetchPost, token };
+export const login = ({ login, password }) => {
+    return fetch('https://wedev-api.sky.pro/api/user/login', {
+        method: "POST",
+        body: JSON.stringify({
+            login,
+            password,
+        })
+    })
+        .then((response) => {
+            return response.json();
+        })
+};
