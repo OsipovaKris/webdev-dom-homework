@@ -1,4 +1,4 @@
-const host = "https://webdev-hw-api.vercel.app/api/v2/kris-osipova557/comments";
+const host = "https://webdev-hw-api.vercel.app/api/v2/kris-osipova/comments";
 
 import { token } from "./render-comments.js";
 
@@ -46,11 +46,25 @@ export const fetchPost = (name, text) => {
         })
 };
 
-export const login = ({ login, password }) => {
+export const loginUser = ({ login, password }) => {
     return fetch('https://wedev-api.sky.pro/api/user/login', {
         method: "POST",
         body: JSON.stringify({
             login,
+            password,
+        })
+    })
+        .then((response) => {
+            return response.json();
+        })
+};
+
+export const registerUser = ({ login, name, password }) => {
+    return fetch('https://wedev-api.sky.pro/api/user', {
+        method: "POST",
+        body: JSON.stringify({
+            login,
+            name,
             password,
         })
     })

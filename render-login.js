@@ -1,8 +1,8 @@
-import { login } from "./api.js";
+import { loginUser, registerUser } from "./api.js";
 
 export function renderLogin({ appEl, setToken, fetchAndRenderComments }) {
 
-    let isLogin = true;
+    let isLoginMode = true;
 
     const renderForm = () => {
 
@@ -10,15 +10,15 @@ export function renderLogin({ appEl, setToken, fetchAndRenderComments }) {
         <div class="container">
             <p class="hidden">Пожалуйста подождите...</p>
             <div class="add-form login-form">
-                <h2 class="login-text">Форма ${isLogin ? "входа" : "регистрации"}</h2>
-                ${isLogin ? "" : `<input type="text" class="add-login" placeholder="Введите имя" />
+                <h2 class="login-text">Форма ${isLoginMode ? "входа" : "регистрации"}</h2>
+                ${isLoginMode ? "" : `<input type="text" class="add-login" id="name-input" placeholder="Введите имя" />
                 <br>`}
-                <input type="text" class="add-login" placeholder="Введите логин" />
+                <input type="text" class="add-login" id="login-input" placeholder="Введите логин" />
                 <br>
-                <input type="password" class="add-login" placeholder="Введите пароль" />
+                <input type="password" class="add-login" id="password-input" placeholder="Введите пароль" />
                 <div class="login-form-row">
-                    <button class="add-form-button login-button">${isLogin ? "Войти" : "Зарегистрироваться"}</button>
-                    <a href="#" class="toggle-button">${isLogin ? "Зарегистрироваться" : "Войти"}</a>
+                    <button class="add-form-button login-button">${isLoginMode ? "Войти" : "Зарегистрироваться"}</button>
+                    <a href="#" class="toggle-button">${isLoginMode ? "Зарегистрироваться" : "Войти"}</a>
                 </div>
             </div>
         </div>
@@ -29,16 +29,35 @@ export function renderLogin({ appEl, setToken, fetchAndRenderComments }) {
 
         document.querySelector('.login-button').addEventListener('click', function () {
 
-            setToken("Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k");
+            if (isLoginMode) {
 
-            login({
-                login: "glebka",
-                password: "123456",
-            }).then((user) => {
-                setToken(`Bearer ${user.user.token}`);
+                const login = document.getElementById('login-input').value;
+                const password = document.getElementById('password-input').value;
 
-                fetchAndRenderComments();
-            })
+                loginUser({
+                    login: login,
+                    password: password,
+                }).then((user) => {
+                    setToken(`Bearer ${user.user.token}`);
+
+                    fetchAndRenderComments();
+                })
+            } else {
+
+                const login = document.getElementById('login-input').value;
+                const name = document.getElementById('name-input').value;
+                const password = document.getElementById('password-input').value;
+
+                registerUser({
+                    login: login,
+                    name: name,
+                    password: password,
+                }).then((user) => {
+                    setToken(`Bearer ${user.user.token}`);
+
+                    fetchAndRenderComments();
+                })
+            }
 
 
             const textPending = document.querySelector('p');
@@ -48,7 +67,7 @@ export function renderLogin({ appEl, setToken, fetchAndRenderComments }) {
 
         document.querySelector('.toggle-button').addEventListener('click', function () {
 
-            isLogin = !isLogin;
+            isLoginMode = !isLoginMode;
 
             renderForm();
         });
