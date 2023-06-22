@@ -71,6 +71,7 @@ const renderApp = () => {
     if (!token) {
 
         renderLogin({
+            commentsHtml,
             appEl,
             setToken: (newToken) => { token = newToken; },
             fetchAndRenderComments,
