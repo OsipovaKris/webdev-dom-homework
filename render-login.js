@@ -46,7 +46,7 @@ export function renderLogin({ commentsHtml, appEl, setToken, fetchAndRenderComme
             });
         }
 
-        else {            
+        else {
 
             document.querySelector('.toggle-button').addEventListener('click', function () {
 
@@ -63,14 +63,37 @@ export function renderLogin({ commentsHtml, appEl, setToken, fetchAndRenderComme
                     const login = document.getElementById('login-input').value;
                     const password = document.getElementById('password-input').value;
 
+                    if (!login) {
+
+                        alert('Введите логин');
+                        return;
+                    }
+
+                    if (!password) {
+
+                        alert('Введите пароль');
+                        return;
+                    }
+
                     loginUser({
                         login: login,
                         password: password,
-                    }).then((user) => {
-                        setToken(`Bearer ${user.user.token}`);
-
-                        fetchAndRenderComments();
                     })
+                        .then((user) => {
+
+                            setToken(`Bearer ${user.user.token}`);
+
+                            fetchAndRenderComments();
+                        })
+                        .catch((error) => {
+
+                            textPending.classList.add('hidden');
+
+                            if (error.message === "Неверный логин или пароль") {
+                                alert("Неверный логин или пароль, исправь и попробуй снова");
+                                return;
+                            }
+                        })
                 } else {
 
                     const login = document.getElementById('login-input').value;
@@ -81,18 +104,29 @@ export function renderLogin({ commentsHtml, appEl, setToken, fetchAndRenderComme
                         login: login,
                         name: name,
                         password: password,
-                    }).then((user) => {
-                        setToken(`Bearer ${user.user.token}`);
-
-                        fetchAndRenderComments();
                     })
+                        .then((user) => {
+
+                            setToken(`Bearer ${user.user.token}`);
+
+                            fetchAndRenderComments();
+                        })
+                        .catch((error) => {
+
+                            textPending.classList.add('hidden');
+
+                            if (error.message === "Пользователь с таким логином уже сущетсвует") {
+                                alert("Пользователь с таким логином уже сущетсвует");
+                                return;
+                            }
+                        })
                 }
 
 
                 const textPending = document.querySelector('p');
                 textPending.classList.remove('hidden');
                 textPending.textContent = 'Пожалуйста подождите, загружаю комментарии...';
-            });            
+            });
         };
     };
 

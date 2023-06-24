@@ -55,7 +55,14 @@ export const loginUser = ({ login, password }) => {
         })
     })
         .then((response) => {
-            return response.json();
+
+            if (response.status === 400) {
+                throw new Error("Неверный логин или пароль");
+            }
+
+            else {
+                return response.json();
+            }
         })
 };
 
@@ -69,6 +76,13 @@ export const registerUser = ({ login, name, password }) => {
         })
     })
         .then((response) => {
-            return response.json();
+
+            if (response.status === 400) {
+                throw new Error("Пользователь с таким логином уже сущетсвует");
+            }
+
+            else {
+                return response.json();
+            }
         })
 };

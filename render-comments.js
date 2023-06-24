@@ -87,7 +87,7 @@ const renderApp = () => {
              </ul >
              <p class="hidden">Пожалуйста подождите, загружаю комментарии...</p>
              <div class="add-form">
-                 <input type="text" class="add-form-name" placeholder="Введите ваше имя" />
+                 <input type="text" class="add-form-name" value="" disabled="true"/>
                  <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"></textarea>
                  <div class="add-form-row">
                      <button class="add-form-button">Написать</button>
@@ -108,7 +108,7 @@ const renderApp = () => {
         const formText = document.querySelector('.add-form-text');
         const textPending = document.querySelector('p');
 
-        if (formName.value !== "" && formText.value !== "") {
+        if (formText.value !== "") {
 
             textPending.classList.remove('hidden');
             textPending.textContent = 'Комментарий добавляется...';
@@ -179,7 +179,6 @@ const fetchAndRenderComments = () => {
 
             textPending.classList.add('hidden');
         });
-
 };
 
 
