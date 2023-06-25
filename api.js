@@ -1,9 +1,14 @@
-import { formName } from "./main.js";
-import { formText } from "./main.js";
+const host = "https://webdev-hw-api.vercel.app/api/v2/kris-osipova48/comments";
 
-const fetchGet = () => {
-    return fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova/comments", {
+import { token } from "./render-comments.js";
+
+
+export const fetchGet = () => {
+    return fetch(host, {
         method: "GET",
+        headers: {
+            Authorization: token,
+        },
     })
         .then((response) => {
 
@@ -11,13 +16,14 @@ const fetchGet = () => {
         })
 };
 
-const fetchPost = () => {
-    return fetch("https://webdev-hw-api.vercel.app/api/v1/kris-osipova/comments", {
+export const fetchPost = (text) => {
+    return fetch(host, {
         method: "POST",
+        headers: {
+            Authorization: token,
+        },
         body: JSON.stringify({
-            name: formName.value
-                .replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
-            text: formText.value
+            text: text.value
                 .replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
             forceError: false,
         })
@@ -38,4 +44,43 @@ const fetchPost = () => {
         })
 };
 
-export { fetchGet, fetchPost };
+export const loginUser = ({ login, password }) => {
+    return fetch('https://wedev-api.sky.pro/api/user/login', {
+        method: "POST",
+        body: JSON.stringify({
+            login,
+            password,
+        })
+    })
+        .then((response) => {
+
+            if (response.status === 400) {
+                throw new Error("Неверный логин или пароль");
+            }
+
+            else {
+                return response.json();
+            }
+        })
+};
+
+export const registerUser = ({ login, name, password }) => {
+    return fetch('https://wedev-api.sky.pro/api/user', {
+        method: "POST",
+        body: JSON.stringify({
+            login,
+            name,
+            password,
+        })
+    })
+        .then((response) => {
+
+            if (response.status === 400) {
+                throw new Error("Пользователь с таким логином уже сущетсвует");
+            }
+
+            else {
+                return response.json();
+            }
+        })
+};
