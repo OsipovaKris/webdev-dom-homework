@@ -1,6 +1,6 @@
 import { loginUser, registerUser } from "./api.js";
 
-export function renderLogin({ commentsHtml, appEl, setToken, fetchAndRenderComments }) {
+export function renderLogin({ commentsHtml, appEl, setToken, setName, fetchAndRenderComments }) {
 
     let isLoginMode = true;
 
@@ -83,6 +83,8 @@ export function renderLogin({ commentsHtml, appEl, setToken, fetchAndRenderComme
 
                             setToken(`Bearer ${user.user.token}`);
 
+                            setName(user.user.name);
+
                             fetchAndRenderComments();
                         })
                         .catch((error) => {
@@ -108,6 +110,8 @@ export function renderLogin({ commentsHtml, appEl, setToken, fetchAndRenderComme
                         .then((user) => {
 
                             setToken(`Bearer ${user.user.token}`);
+
+                            setName(user.user.name);
 
                             fetchAndRenderComments();
                         })

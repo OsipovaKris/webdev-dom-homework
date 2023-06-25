@@ -6,6 +6,8 @@ let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
 
 token = null;
 
+let userName;
+
 const initClickLikeButtons = () => {
     const commentLikeButtons = document.querySelectorAll('.like-button');
 
@@ -74,6 +76,7 @@ const renderApp = () => {
             commentsHtml,
             appEl,
             setToken: (newToken) => { token = newToken; },
+            setName: (newUserName) => { userName = newUserName; },
             fetchAndRenderComments,
         });
         return;
@@ -87,7 +90,7 @@ const renderApp = () => {
              </ul >
              <p class="hidden">Пожалуйста подождите, загружаю комментарии...</p>
              <div class="add-form">
-                 <input type="text" class="add-form-name" value="" disabled="true"/>
+                 <input type="text" class="add-form-name" value=${userName} disabled="true"/>
                  <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"></textarea>
                  <div class="add-form-row">
                      <button class="add-form-button">Написать</button>
@@ -97,14 +100,13 @@ const renderApp = () => {
 
     appEl.innerHTML = appHtml;
 
-
+    const formName = document.querySelector('.add-form-name');
     const formButton = document.querySelector('.add-form-button');
     const formBox = document.querySelector('.add-form');
 
 
     formButton.addEventListener('click', function () {
 
-        const formName = document.querySelector('.add-form-name');
         const formText = document.querySelector('.add-form-text');
         const textPending = document.querySelector('p');
 
@@ -115,7 +117,7 @@ const renderApp = () => {
             formBox.classList.add('hidden');
 
 
-            fetchPost(formName, formText)
+            fetchPost(formText)
                 .then(() => {
 
                     return fetchAndRenderComments();
@@ -124,7 +126,6 @@ const renderApp = () => {
 
                     formBox.classList.remove('hidden');
                     textPending.classList.add('hidden');
-                    formName.value = '';
                     formText.value = '';
                 })
                 .catch((error) => {
@@ -133,7 +134,7 @@ const renderApp = () => {
                     textPending.classList.add('hidden');
 
                     if (error.message === "Плохой запрос") {
-                        alert("Имя и комментарий должны содержать больше 3 символов, исправь и попробуй снова");
+                        alert("Комментарий должен содержать больше 3 символов, исправь и попробуй снова");
                         return;
                     }
 

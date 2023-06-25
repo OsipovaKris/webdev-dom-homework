@@ -1,4 +1,4 @@
-const host = "https://webdev-hw-api.vercel.app/api/v2/kris-osipova/comments";
+const host = "https://webdev-hw-api.vercel.app/api/v2/kris-osipova48/comments";
 
 import { token } from "./render-comments.js";
 
@@ -16,15 +16,13 @@ export const fetchGet = () => {
         })
 };
 
-export const fetchPost = (name, text) => {
+export const fetchPost = (text) => {
     return fetch(host, {
         method: "POST",
         headers: {
             Authorization: token,
         },
         body: JSON.stringify({
-            name: name.value
-                .replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
             text: text.value
                 .replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
             forceError: false,
