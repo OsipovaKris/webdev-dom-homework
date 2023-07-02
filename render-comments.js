@@ -1,6 +1,7 @@
 import { fetchGet } from "./api.js";
 import { fetchPost } from "./api.js";
 import { renderLogin } from "./render-login.js";
+import { format } from "date-fns";
 
 let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
 
@@ -51,10 +52,13 @@ const renderApp = () => {
 
     const commentsHtml = comments
         .map((comment) => {
+
+            const createDate = format(new Date(comment.date), 'yyyy-MM-dd HH:mm:ss');
+
             return `<li class="comment">
           <div class="comment-header">
           <div>${comment.name}</div>
-          <div>${comment.date}</div>
+          <div>${createDate}</div>
           </div>
           <div class="comment-body">
           <div class="comment-text">${comment.commentary}</div>
@@ -165,7 +169,7 @@ const fetchAndRenderComments = () => {
             const appComments = responseData.comments.map((comment) => {
                 return {
                     name: comment.author.name,
-                    date: new Date(comment.date).toLocaleString().slice(0, -3),
+                    date: comment.date,
                     commentary: comment.text,
                     likes: comment.likes,
                     isLiked: false,
